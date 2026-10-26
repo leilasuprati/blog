@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review — Soft Luxe Edit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Soft Luxe <span>Edit</span></a>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../categories/bags.html">Bags</a>
+        <a href="../categories/shoes.html">Shoes</a>
+        <a href="../archive.html">Archive</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <section class="section">
+    <div class="container" style="max-width:720px;">
+      <p style="color:var(--muted);margin-bottom:1rem;"><a href="../archive.html">← Back to Archive</a></p>
+      <h1 id="title">Product Review</h1>
+      <p id="meta" style="color:var(--muted);margin:1rem 0;"></p>
+      <div id="content">
+        <p>This review page is ready for content. Open <code>data/products.json</code>, find the matching product, and expand this page with photos, pros/cons and your notes following the style of the fully written reviews (Chanel shearling or YSL Lou).</p>
+        <div class="draft-notice">
+          <strong>Editable draft:</strong> Replace this placeholder with full review content. Keep the DHgate link and status accurate.
+        </div>
+      </div>
+      <p style="margin-top:2rem;"><a href="../archive.html" class="btn btn-outline">Back to Archive</a></p>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025–2026 Soft Luxe Edit.</p>
+    </div>
+  </footer>
+  <script>
+    // Auto-fill basic info from products.json based on filename
+    const slug = location.pathname.split('/').pop().replace('.html','');
+    fetch('../data/products.json').then(r=>r.json()).then(products => {
+      const p = products.find(x => x.slug === slug);
+      if (p) {
+        document.title = p.name + ' — Soft Luxe Edit';
+        document.getElementById('title').textContent = p.name;
+        document.getElementById('meta').innerHTML = `${p.published || ''} · ${p.price || ''} · <span class="badge badge-${p.status}">${p.status}</span>`;
+        if (p.images && p.images[0]) {
+          document.getElementById('content').insertAdjacentHTML('afterbegin', `<img src="${p.images[0]}" alt="${p.name}" style="margin-bottom:1.5rem;border-radius:4px;max-width:100%;">`);
+        }
+        if (p.dhgate) {
+          document.getElementById('content').insertAdjacentHTML('beforeend', `<p style="margin-top:1.5rem;"><a href="${p.dhgate}" class="cta-link" target="_blank" rel="noopener">View on DHgate →</a></p>`);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

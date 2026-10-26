@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soft Luxe Edit — Honest Fashion Reviews & Finds</title>
+  <meta name="description" content="Honest reviews of designer-inspired bags, shoes and accessories. Soft luxury finds with real notes on quality, fit and style.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">Soft Luxe <span>Edit</span></a>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="categories/bags.html">Bags</a>
+        <a href="categories/shoes.html">Shoes</a>
+        <a href="archive.html">Archive</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Honest finds.<br>Soft luxury.</h1>
+      <p>A year of testing designer-inspired bags, shoes and accessories so you don’t have to guess. Real notes on quality, fit and whether they’re worth it.</p>
+      <a href="archive.html" class="btn">Browse the Archive</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Recent Reviews</h2>
+      <div class="product-grid" id="recent-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="text-center mt-2">
+        <a href="archive.html" class="btn btn-outline">View All Reviews</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--white);">
+    <div class="container">
+      <h2 class="section-title">Shop by Category</h2>
+      <div class="product-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <a href="categories/bags.html" class="product-card">
+          <div class="img-wrap">
+            <img src="https://img1.wsimg.com/isteam/ip/ec0d2c7f-0926-49d3-a49f-893de25144e1/IMG_9658-3d27d37.png/:/cr=t:16.22%25,l:0.42%25,w:94.34%25,h:57.88%25/rs=w:600,h:800,cg:true,m" alt="Bags">
+          </div>
+          <div class="info">
+            <h3>Bags</h3>
+            <p style="color:var(--muted);font-size:0.95rem;">Shoulder, tote, crossbody & more</p>
+          </div>
+        </a>
+        <a href="categories/shoes.html" class="product-card">
+          <div class="img-wrap">
+            <img src="https://img1.wsimg.com/isteam/ip/ec0d2c7f-0926-49d3-a49f-893de25144e1/IMG_9003.png/:/cr=t:23.17%25,l:1.27%25,w:89.29%25,h:54.78%25/rs=w:600,h:800,cg:true,m" alt="Shoes">
+          </div>
+          <div class="info">
+            <h3>Shoes</h3>
+            <p style="color:var(--muted);font-size:0.95rem;">Boots, sneakers, heels & sandals</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <div class="container">
+      <h2>Stay in the loop</h2>
+      <p>New reviews, monthly favorites and honest “worth it / skip it” notes delivered monthly.</p>
+      <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks! This is a demo form — connect your email service later.');">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="categories/bags.html">Bags</a>
+        <a href="categories/shoes.html">Shoes</a>
+        <a href="archive.html">Archive</a>
+        <a href="about.html">About</a>
+      </nav>
+      <p>© 2025–2026 Soft Luxe Edit. All product links go to DHgate. This is an independent review site.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Load recent published products
+    fetch('data/products.json')
+      .then(r => r.json())
+      .then(products => {
+        const published = products
+          .filter(p => p.status === 'published')
+          .sort((a,b) => new Date(b.published) - new Date(a.published))
+          .slice(0, 6);
+        const grid = document.getElementById('recent-grid');
+        grid.innerHTML = published.map(p => `
+          <a href="reviews/${p.slug}.html" class="product-card">
+            <div class="img-wrap">
+              ${p.images && p.images[0] ? `<img src="${p.images[0]}" alt="${p.name}" loading="lazy">` : '<div style="background:var(--warm-beige);height:100%;"></div>'}
+            </div>
+            <div class="info">
+              <div class="category">${p.category}</div>
+              <h3>${p.name}</h3>
+              <div class="meta">
+                <span>${p.price || ''}</span>
+                <span class="rating">${p.rating ? p.rating + ' ★' : 'Draft'}</span>
+              </div>
+            </div>
+          </a>
+        `).join('');
+      });
+  </script>
+</body>
+</html>
